@@ -15,7 +15,32 @@ taskForm.addEventListener('submit', (e) => {
 });
 
 function addTasks(taskTxt, isCompleted=false) {
+    const li = document.createElement('li');
+    li.textContent = taskTxt;
+
+    if (isCompleted) li.classList.add('completed');
+
+    const completeBtn = document.createElement('button');
+    completeBtn.textContent = 'Complete';
+    completeBtn.className = 'complete-btn';
+    completeBtn.addEventListener('click', () => {
+        li.classList.toggle('completed');
+        toggleTask(taskTxt);
+    });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = 'Delete';
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.addEventListener('click', () => {
+        li.remove();
+        removeTask();
+    });
+    
+    li.appendChild(completeBtn);
+    li.appendChild(deleteBtn);
+    taskList.appendChild(li);
 }
+
 
 function saveTask(taskTxt) {
 
