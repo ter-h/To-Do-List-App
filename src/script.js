@@ -1,6 +1,6 @@
 const taskForm = document.getElementById('task-form');
 const taskInput = document.getElementById('task-input');
-const taskList = document.getElementById('tasklist');
+const taskList = document.getElementById('task-list');
 
 document.addEventListener('DOMContentLoaded', loadTasks);
 
@@ -14,7 +14,7 @@ taskForm.addEventListener('submit', (e) => {
     }
 });
 
-function addTasks(taskTxt, isCompleted=false) {
+function addTask(taskTxt, isCompleted=false) {
     const li = document.createElement('li');
     li.textContent = taskTxt;
 
@@ -33,7 +33,7 @@ function addTasks(taskTxt, isCompleted=false) {
     deleteBtn.className = 'delete-btn';
     deleteBtn.addEventListener('click', () => {
         li.remove();
-        removeTask();
+        removeTask(taskTxt);
     });
     
     li.appendChild(completeBtn);
@@ -41,16 +41,15 @@ function addTasks(taskTxt, isCompleted=false) {
     taskList.appendChild(li);
 }
 
-
 function saveTask(taskTxt) {
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.push({ taskTxt, completed:false });
+    tasks.push({ text: taskTxt, completed: false });
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 function removeTask(taskTxt) {
     let tasks = JSON.parse(localStorage.getItm("tasks")) || [];
-    tasks.filter((task) => task.text !== taskTxt);
+    tasks = tasks.filter((task) => task.text !== taskTxt);
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
@@ -63,7 +62,5 @@ function toggleTask(taskTxt) {
 
 function loadTasks() {
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks.array.forEach((task) => {
-        addTask(task.txt, task.completed);
-    });
+    tasks.forEach((task) => addTask(task.txt, task.completed));
 }
