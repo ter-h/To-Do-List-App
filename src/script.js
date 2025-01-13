@@ -15,6 +15,7 @@ taskForm.addEventListener('submit', (e) => {
 });
 
 function addTask(taskTxt, isCompleted=false) {
+
     const li = document.createElement('li');
     li.textContent = taskTxt;
 
@@ -42,13 +43,15 @@ function addTask(taskTxt, isCompleted=false) {
 }
 
 function saveTask(taskTxt) {
+    if (!taskTxt) return;
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
     tasks.push({ text: taskTxt, completed: false });
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 function removeTask(taskTxt) {
-    let tasks = JSON.parse(localStorage.getItm("tasks")) || [];
+    if (!taskTxt) return;
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
     tasks = tasks.filter((task) => task.text !== taskTxt);
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
@@ -62,5 +65,8 @@ function toggleTask(taskTxt) {
 
 function loadTasks() {
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    tasks.forEach((task) => addTask(task.txt, task.completed));
+    tasks.forEach((task) => {
+            addTask(task.text, task.completed);
+            console.log(task);
+    });
 }
