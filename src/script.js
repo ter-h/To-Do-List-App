@@ -43,7 +43,9 @@ function addTasks(taskTxt, isCompleted=false) {
 
 
 function saveTask(taskTxt) {
-
+    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks.push({ taskTxt, completed:false });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 function removeTask(taskTxt) {
