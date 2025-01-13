@@ -49,7 +49,9 @@ function saveTask(taskTxt) {
 }
 
 function removeTask(taskTxt) {
-
+    let tasks = JSON.parse(localStorage.getItm("tasks")) || [];
+    tasks.filter((task) => task.text !== taskTxt);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 function toggleTask(taskTxt) {
