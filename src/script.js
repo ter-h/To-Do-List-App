@@ -62,5 +62,8 @@ function toggleTask(taskTxt) {
 }
 
 function loadTasks() {
-
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasks.array.forEach((task) => {
+        addTask(task.txt, task.completed);
+    });
 }
