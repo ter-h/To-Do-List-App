@@ -55,7 +55,10 @@ function removeTask(taskTxt) {
 }
 
 function toggleTask(taskTxt) {
-
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const task = tasks.find((task) => task.text === taskTxt);
+    if (task) task.completed = !task.completed;
+    localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
 function loadTasks() {
