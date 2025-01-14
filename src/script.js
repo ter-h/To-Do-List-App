@@ -1,8 +1,10 @@
 const taskForm = document.getElementById('task-form');
 const taskInput = document.getElementById('task-input');
 const taskList = document.getElementById('task-list');
+const clrBtn = document.getElementById('clear-all-btn');
 
 document.addEventListener('DOMContentLoaded', loadTasks);
+clrBtn.addEventListener('click', clearAllTasks);
 
 taskForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -17,17 +19,26 @@ taskForm.addEventListener('submit', (e) => {
 function addTask(taskTxt, isCompleted=false) {
 
     const li = document.createElement('li');
-    li.textContent = taskTxt;
 
-    if (isCompleted) li.classList.add('completed');
-
-    const completeBtn = document.createElement('button');
-    completeBtn.textContent = 'Complete';
-    completeBtn.className = 'complete-btn';
-    completeBtn.addEventListener('click', () => {
-        li.classList.toggle('completed');
-        toggleTask(taskTxt);
+    const completeCheckbox = document.createElement('input');
+    const checkboxId = `checkbox-${Date.now()}`;
+    completeCheckbox.type = 'checkbox';
+    completeCheckbox.className = 'complete-checkbox';
+    completeCheckbox.id = checkboxId;
+    completeCheckbox.checked = isCompleted;
+  
+    completeCheckbox.addEventListener('change', () => {
+      li.classList.toggle('completed');
+      toggleTask(taskTxt);
     });
+  
+    const completeLabel = document.createElement('label');
+    completeLabel.className = 'complete-label';
+    completeLabel.setAttribute('for', checkboxId);
+
+    const taskName = document.createElement('span');
+    taskName.textContent = taskTxt;
+
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = 'Delete';
@@ -37,8 +48,15 @@ function addTask(taskTxt, isCompleted=false) {
         removeTask(taskTxt);
     });
     
-    li.appendChild(completeBtn);
+    li.appendChild(completeCheckbox);
+    li.appendChild(completeLabel);
+    li.appendChild(taskName);
     li.appendChild(deleteBtn);
+
+    if (isCompleted) {
+        li.classList.add('completed');
+    }
+
     taskList.appendChild(li);
 }
 
@@ -70,3 +88,10 @@ function loadTasks() {
             console.log(task);
     });
 }
+
+function clearAllTasks() {
+    taskList.innerHTML = '';
+    localStorage.removeItem('tasks');
+}
+
+
